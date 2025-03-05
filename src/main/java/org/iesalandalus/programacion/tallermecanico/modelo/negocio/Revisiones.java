@@ -100,8 +100,4 @@ public class Revisiones {
         coleccionRevisiones.remove(revision);
 
     }
-
-
-
-
 }

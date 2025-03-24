@@ -3,9 +3,9 @@ package org.iesalandalus.programacion.tallermecanico.modelo;
 import org.iesalandalus.programacion.tallermecanico.modelo.dominio.Cliente;
 import org.iesalandalus.programacion.tallermecanico.modelo.dominio.Revision;
 import org.iesalandalus.programacion.tallermecanico.modelo.dominio.Vehiculo;
-import org.iesalandalus.programacion.tallermecanico.modelo.negocio.Clientes;
-import org.iesalandalus.programacion.tallermecanico.modelo.negocio.Revisiones;
-import org.iesalandalus.programacion.tallermecanico.modelo.negocio.Vehiculos;
+import org.iesalandalus.programacion.tallermecanico.modelo.negocio.memoria.Clientes;
+import org.iesalandalus.programacion.tallermecanico.modelo.negocio.memoria.Trabajos;
+import org.iesalandalus.programacion.tallermecanico.modelo.negocio.memoria.Vehiculos;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -14,7 +14,7 @@ import java.util.Objects;
 
 public class Modelo {
     private Clientes clientes;
-    private Revisiones revisiones;
+    private Trabajos trabajos;
     private Vehiculos vehiculos;
 
     public Modelo() {
@@ -22,7 +22,7 @@ public class Modelo {
     }
     public void comenzar() {
         clientes = new Clientes();
-        revisiones = new Revisiones();
+        trabajos = new Trabajos();
         vehiculos = new Vehiculos();
     }
     public void terminar() {
@@ -40,7 +40,7 @@ public class Modelo {
         Objects.requireNonNull(revision, "La revisión no puede ser nula.");
         Cliente cliente = clientes.buscar(revision.getCliente());
         Vehiculo vehiculo = vehiculos.buscar(revision.getVehiculo());
-        revisiones.insertar(new Revision(cliente, vehiculo, revision.getFechaInicio()));
+        trabajos.insertar(new Revision(cliente, vehiculo, revision.getFechaInicio()));
     }
     public Cliente buscar(Cliente cliente) {
         Cliente buscao = null;
@@ -58,7 +58,7 @@ public class Modelo {
     }
     public Revision buscar(Revision revision) {
         Revision buscao = null;
-        if (revisiones.buscar(revision) != null) {
+        if (trabajos.buscar(revision) != null) {
             buscao = new Revision(revision);
         }
         return buscao;
@@ -67,33 +67,33 @@ public class Modelo {
         return clientes.modificar(cliente, nombre, telefono);
     }
     public Revision anadirHoras(Revision revision, int horas) throws TallerMecanicoExcepcion {
-        return revisiones.anadirHoras(revision, horas);
+        return trabajos.anadirHoras(revision, horas);
     }
     public Revision anadirPrecioMaterial(Revision revision, float precioMaterial) throws TallerMecanicoExcepcion {
-        return revisiones.anadirPrecioMaterial(revision, precioMaterial);
+        return trabajos.anadirPrecioMaterial(revision, precioMaterial);
     }
     public Revision cerrar(Revision revision, LocalDate fechaFin) throws TallerMecanicoExcepcion {
-        return revisiones.cerrar(revision, fechaFin);
+        return trabajos.cerrar(revision, fechaFin);
     }
     public void borrar(Cliente cliente) throws TallerMecanicoExcepcion {
-        List<Revision> revisionesCliente = revisiones.get(cliente);
+        List<Revision> revisionesCliente = trabajos.get(cliente);
         for (Revision revision : revisionesCliente) {
-            revisiones.borrar(revision);
+            trabajos.borrar(revision);
         }
         clientes.borrar(cliente);
 
     }
 
     public void borrar(Vehiculo vehiculo) throws TallerMecanicoExcepcion {
-        List<Revision> revisionesVehiculo = revisiones.get(vehiculo);
+        List<Revision> revisionesVehiculo = trabajos.get(vehiculo);
         for (Revision revision : revisionesVehiculo) {
-            revisiones.borrar(revision);
+            trabajos.borrar(revision);
         }
         vehiculos.borrar(vehiculo);
 
     }
     public void borrar(Revision revision) throws TallerMecanicoExcepcion {
-        revisiones.borrar(revision);
+        trabajos.borrar(revision);
 
     }
     public List<Cliente> getClientes() {
@@ -112,14 +112,14 @@ public class Modelo {
     }
     public List<Revision> getRevisiones() {
         List<Revision> copiaRevisiones = new ArrayList<>();
-        for (Revision revision : revisiones.get()) {
+        for (Revision revision : trabajos.get()) {
             copiaRevisiones.add(new Revision(revision));
         }
         return copiaRevisiones;
     }
     public List<Revision> getRevisiones(Cliente cliente) {
         List<Revision> copiaRevisionCliente = new ArrayList<>();
-        for (Revision revision : revisiones.get(cliente)) {
+        for (Revision revision : trabajos.get(cliente)) {
             if (revision.getCliente().equals(cliente)) {
                 copiaRevisionCliente.add(new Revision(revision));
             }
@@ -128,7 +128,7 @@ public class Modelo {
     }
     public List<Revision> getRevisiones(Vehiculo vehiculo) {
         List<Revision> copiaRevisionVehiculo = new ArrayList<>();
-        for (Revision revision : revisiones.get(vehiculo)) {
+        for (Revision revision : trabajos.get(vehiculo)) {
             if (revision.getVehiculo().equals(vehiculo)) {
                 copiaRevisionVehiculo.add(new Revision(revision));
             }

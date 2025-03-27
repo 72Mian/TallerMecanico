@@ -6,6 +6,7 @@ import org.iesalandalus.programacion.tallermecanico.modelo.negocio.ITrabajos;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
 
@@ -71,33 +72,43 @@ public class Trabajos implements ITrabajos {
     @Override
     public Trabajo anadirHoras(Trabajo trabajo, int horas) throws TallerMecanicoExcepcion {
         Objects.requireNonNull(trabajo, "No puedo añadir horas a un trabajo nulo.");
-        getTrabajoAbierto(trabajo).anadirHoras(horas);
-        return getTrabajoAbierto(trabajo);
+        Trabajo trabajoEncontrado = getTrabajoAbierto(trabajo.getVehiculo());
+        trabajoEncontrado.anadirHoras(horas);
+        return trabajoEncontrado;
 
     }
-    private Trabajo getTrabajoAbierto(Trabajo trabajo) throws TallerMecanicoExcepcion {
-        Objects.requireNonNull(trabajo, "El trabajo no puede ser nulo.");
-        if (!coleccionTrabajos.contains(trabajo)) {
+    private Trabajo getTrabajoAbierto(Vehiculo vehiculo) throws TallerMecanicoExcepcion {
+        Objects.requireNonNull(vehiculo, "No puedo operar sobre un vehiculo nulo.");
+        Trabajo trabajoEncontrado = null;
+        Iterator<Trabajo> iteradorTrabajos = coleccionTrabajos.iterator();
+        while (iteradorTrabajos.hasNext() && trabajoEncontrado == null) {
+            Trabajo trabajo = iteradorTrabajos.next();
+            if (trabajo.getVehiculo().equals(vehiculo) && !trabajo.estaCerrado()) {
+                trabajoEncontrado = trabajo;
+            }
+        }
+        if (trabajoEncontrado == null) {
             throw new TallerMecanicoExcepcion("No existe ningún trabajo abierto para dicho vehículo.");
         }
-        return trabajo;
+        return trabajoEncontrado;
     }
     @Override
     public Trabajo anadirPrecioMaterial(Trabajo trabajo, float precioMaterial) throws TallerMecanicoExcepcion {
         Objects.requireNonNull(trabajo, "No puedo añadir precio del material a un trabajo nulo.");
-        Trabajo trabajoAbierto = getTrabajoAbierto(trabajo);
-        if (trabajoAbierto instanceof Mecanico) {
-            return (Mecanico) trabajoAbierto;
+        Trabajo trabajoAbierto = getTrabajoAbierto(trabajo.getVehiculo());
+        if (trabajoAbierto instanceof Mecanico mecanico) {
+            mecanico.anadirPrecioMaterial(precioMaterial);
         } else {
             throw new TallerMecanicoExcepcion("No se puede añadir precio al material para este tipo de trabajos.");
         }
+        return trabajoAbierto;
 
     }
     @Override
     public Trabajo cerrar(Trabajo trabajo, LocalDate fechaFin) throws TallerMecanicoExcepcion {
         Objects.requireNonNull(trabajo, "No puedo cerrar un trabajo nulo.");
-        getTrabajoAbierto(trabajo).cerrar(fechaFin);
-        return getTrabajoAbierto(trabajo);
+        getTrabajoAbierto(trabajo.getVehiculo()).cerrar(fechaFin);
+        return getTrabajoAbierto(trabajo.getVehiculo());
     }
     @Override
     public Trabajo buscar(Trabajo trabajo)  {

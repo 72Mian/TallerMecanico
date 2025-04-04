@@ -18,7 +18,7 @@ public class ModeloCascada implements Modelo {
     private IVehiculos vehiculos;
 
     public ModeloCascada(FabricaFuenteDatos fabricaFuenteDatos) {
-        Objects.requireNonNull(fabricaFuenteDatos, "La factoría de la fuente  de datos no puede ser nula.");
+        Objects.requireNonNull(fabricaFuenteDatos, "La factoría de la fuente de datos no puede ser nula.");
         IFuenteDatos fuenteDatos = fabricaFuenteDatos.crear();
         clientes = fuenteDatos.crearClientes();
         vehiculos = fuenteDatos.crearVehiculos();
@@ -57,17 +57,17 @@ public class ModeloCascada implements Modelo {
     }
     @Override
     public Cliente buscar(Cliente cliente) {
-        Cliente buscao = null;
-        if (clientes.buscar(cliente) != null) {
-            buscao = new Cliente(cliente);
+        Cliente buscao = clientes.buscar(cliente);
+        if (buscao != null) {
+            buscao = new Cliente(buscao);
         }
         return buscao;
     }
     @Override
     public Vehiculo buscar(Vehiculo vehiculo) {
-        Vehiculo buscao = null;
-        if (vehiculos.buscar(vehiculo) != null) {
-            buscao = new Vehiculo(vehiculo.marca(), vehiculo.modelo(), vehiculo.matricula());
+        Vehiculo buscao = vehiculos.buscar(vehiculo);
+        if (buscao != null) {
+            buscao = vehiculo;
         }
         return buscao;
     }

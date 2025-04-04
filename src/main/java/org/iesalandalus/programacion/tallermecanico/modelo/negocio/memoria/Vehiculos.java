@@ -28,11 +28,8 @@ public class Vehiculos implements IVehiculos {
     @Override
     public Vehiculo buscar(Vehiculo vehiculo) {
         Objects.requireNonNull(vehiculo, "No se puede buscar un vehículo nulo.");
-        Vehiculo valor = null;
-        if (vehiculos.contains(vehiculo)) {
-            valor = vehiculo;
-        }
-        return valor;
+        int indice = vehiculos.indexOf(vehiculo);
+        return (indice != -1) ? vehiculos.get(indice) : null;
     }
     @Override
     public void borrar(Vehiculo vehiculo) throws TallerMecanicoExcepcion {

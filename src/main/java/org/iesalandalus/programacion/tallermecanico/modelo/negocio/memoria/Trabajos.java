@@ -113,10 +113,8 @@ public class Trabajos implements ITrabajos {
     @Override
     public Trabajo buscar(Trabajo trabajo)  {
         Objects.requireNonNull(trabajo, "No se puede buscar un trabajo nulo.");
-        if (!coleccionTrabajos.contains(trabajo)) {
-            trabajo = null;
-        }
-        return trabajo;
+        int indice = coleccionTrabajos.indexOf(trabajo);
+        return (indice != -1) ? coleccionTrabajos.get(indice) : null;
     }
     @Override
     public void borrar(Trabajo trabajo) throws TallerMecanicoExcepcion {

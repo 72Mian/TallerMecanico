@@ -42,11 +42,8 @@ public class Clientes implements IClientes {
     @Override
     public Cliente buscar(Cliente cliente) {
         Objects.requireNonNull(cliente, "No se puede buscar un cliente nulo.");
-            Cliente valor = null;
-        if (clientes.contains(cliente)) {
-            valor = cliente;
-        }
-        return valor;
+        int indice = clientes.indexOf(cliente);
+        return (indice != -1) ? clientes.get(indice) : null;
     }
     @Override
     public void borrar(Cliente cliente) throws TallerMecanicoExcepcion {

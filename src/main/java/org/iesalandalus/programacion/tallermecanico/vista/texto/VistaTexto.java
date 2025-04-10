@@ -4,6 +4,8 @@ import org.iesalandalus.programacion.tallermecanico.modelo.TallerMecanicoExcepci
 import org.iesalandalus.programacion.tallermecanico.modelo.dominio.*;
 import org.iesalandalus.programacion.tallermecanico.vista.eventos.Evento;
 import org.iesalandalus.programacion.tallermecanico.vista.eventos.GestorEventos;
+import org.iesalandalus.programacion.utilidades.Entrada;
+
 import static  org.iesalandalus.programacion.tallermecanico.vista.texto.Consola.*;
 
 import java.time.LocalDate;
@@ -67,7 +69,8 @@ public class VistaTexto implements org.iesalandalus.programacion.tallermecanico.
     }
     @Override
     public Vehiculo leerVehiculoMatricula() {
-        return Vehiculo.get(leerCadena("Introduce la matrícula: "));
+        System.out.print("Introduce la matrícula: ");
+        return new Vehiculo("Seat", "Mo", Entrada.cadena());
 
     }
     @Override

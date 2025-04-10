@@ -36,7 +36,6 @@ public record Vehiculo(String marca, String modelo, String matricula) {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Vehiculo vehiculo = (Vehiculo) o;
         return Objects.equals(matricula, vehiculo.matricula);

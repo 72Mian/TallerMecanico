@@ -1,6 +1,5 @@
 package org.iesalandalus.programacion.tallermecanico.vista.texto;
 
-import org.iesalandalus.programacion.tallermecanico.modelo.TallerMecanicoExcepcion;
 import org.iesalandalus.programacion.tallermecanico.modelo.dominio.*;
 import org.iesalandalus.programacion.tallermecanico.vista.eventos.Evento;
 import org.iesalandalus.programacion.tallermecanico.vista.eventos.GestorEventos;
@@ -9,8 +8,9 @@ import org.iesalandalus.programacion.utilidades.Entrada;
 import static  org.iesalandalus.programacion.tallermecanico.vista.texto.Consola.*;
 
 import java.time.LocalDate;
+import java.util.Comparator;
 import java.util.List;
-import java.util.Objects;
+import java.util.Map;
 
 
 public class VistaTexto implements org.iesalandalus.programacion.tallermecanico.vista.Vista {
@@ -103,8 +103,14 @@ public class VistaTexto implements org.iesalandalus.programacion.tallermecanico.
     }
     @Override
     public LocalDate leerFechaCierre() {
-        return leerFecha("Introduce la fecha de cierre");
+        return leerFecha("Introduce la fecha de cierre: ");
     }
+
+    @Override
+    public LocalDate leerMes() {
+        return leerFecha("Introduce el mes: ");
+    }
+
     @Override
     public void notificarResultado(Evento evento, String texto, boolean exito) {
         if (exito) {
@@ -124,37 +130,47 @@ public class VistaTexto implements org.iesalandalus.programacion.tallermecanico.
     }
     @Override
     public void mostrarTrabajo(Trabajo trabajo) {
-        System.out.println(trabajo);
+        System.out.println((trabajo != null) ? trabajo : "No existe ningún trabajo para ese cliente, vehiculo y fecha.");
     }
     @Override
     public void mostrarClientes(List<Cliente> clientes) {
-        if (clientes.isEmpty()) {
-            System.out.println("La lista esta vacía.");
-        } else {
+        if (!clientes.isEmpty()) {
+            clientes.sort(Comparator.comparing(Cliente::getNombre).thenComparing(Cliente::getDni));
             for (Cliente cliente : clientes) {
                 System.out.println(cliente);
             }
+        } else {
+            System.out.println("No hay clientes que mostrar.");
         }
     }
     @Override
     public void mostrarVehiculos(List<Vehiculo> vehiculos) {
-        if (vehiculos.isEmpty()) {
-            System.out.println("La lista esta vacía.");
-        } else {
+        if (!vehiculos.isEmpty()) {
+            vehiculos.sort(Comparator.comparing(Vehiculo::marca).thenComparing(Vehiculo::modelo).thenComparing(Vehiculo::matricula));
             for (Vehiculo vehiculo : vehiculos) {
                 System.out.println(vehiculo);
             }
+        } else {
+            System.out.println("No hay vehículos que mostrar.");
         }
+
+
     }
     @Override
     public void mostrarTrabajos(List<Trabajo> trabajos) {
-        if (trabajos.isEmpty()) {
-            System.out.println("La lista esta vacía.");
-        } else {
+        if (!trabajos.isEmpty()) {
+            Comparator<Cliente> comparadorCliente = Comparator.comparing(Cliente::getNombre).thenComparing(Cliente::getDni);
+            trabajos.sort(Comparator.comparing(Trabajo::getFechaInicio).thenComparing(Trabajo::getCliente, comparadorCliente));
             for (Trabajo trabajo : trabajos) {
                 System.out.println(trabajo);
             }
+        } else {
+            System.out.println("No hay trabajos que mostrar");
         }
+    }
+    @Override
+    public void mostrarEstadisticasMensuales(Map<TipoTrabajo, Integer> estadisticas) {
+        System.out.printf("Tipos de trabajos realizados este mes: %s%n", estadisticas);
     }
 
 

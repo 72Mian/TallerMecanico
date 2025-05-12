@@ -10,5 +10,6 @@ public enum FabricaVista {
         }
     };
 
+
     public abstract Vista crear();
 }

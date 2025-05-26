@@ -34,7 +34,7 @@ public class Controlador implements IControlador {
             String resultado = "";
             switch (evento) {
                 case INSERTAR_CLIENTE -> { modelo.insertar(vista.leerCliente()); resultado = "Cliente insertado correctamente."; }
-                case INSERTAR_VEHICULO -> { modelo.insertar(vista.leerVehiculo()); resultado = "Vehiculo insertado correcta,emte.";}
+                case INSERTAR_VEHICULO -> { modelo.insertar(vista.leerVehiculo()); resultado = "Vehiculo insertado correctamente.";}
                 case INSERTAR_REVISION -> { modelo.insertar(vista.leerRevision()); resultado = "Trabajo de revisión insertado correctamente.";}
                 case INSERTAR_MECANICO -> { modelo.insertar(vista.leerMecanico()); resultado = "Trabajo mecánico insertado correctamente"; }
                 case BUSCAR_CLIENTE -> vista.mostrarCliente(modelo.buscar(vista.leerClienteDni()));

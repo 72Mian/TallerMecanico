@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.Objects;
 
 public class Vehiculos implements IVehiculos {
-    private static final String FICHERO_VEHICULOS = String.format("%s%s%s", "datos", File.separator, "coleccioVehiculos.xml");
+    private static final String FICHERO_VEHICULOS = String.format("%s%s%s", "datos", File.separator, "vehiculos.xml");
     private static final String RAIZ = "coleccioVehiculos";
     private static final String VEHICULO = "vehiculo";
     private static final String MARCA = "marca";
